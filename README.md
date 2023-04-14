@@ -2,7 +2,7 @@
 -- Updated -- 
 
 >> class functions 
->> initial testing
+<< initial testing
 
 TODO: 
 - Create an interactive GUI
