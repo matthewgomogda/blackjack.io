@@ -1,29 +1,29 @@
 public class InvalidCardValueException extends Exception
 {
-	private int valueIdentifier = 0;
+    private int valueIdentifier = 0;
 
-	public InvalidCardValueException(int invalidValue) {
+    public InvalidCardValueException(int invalidValue) {
 
-		valueIdentifier = invalidValue;
+        valueIdentifier = invalidValue;
 
-		System.out.println("Invalid value " + invalidValue);
-	}
+        System.out.println("Invalid value " + invalidValue);
+    }
 
-	private InvalidCardValueException() {
+    private InvalidCardValueException() {
 
 
-		System.out.println("Invalid value");
-	}
+        System.out.println("Invalid value");
+    }
 
-	public String toString() {
-		
+    public String toString() {
 
-		return ("Attempted to create card with invalid suit argument" + " " + this.valueIdentifier);
-	}
 
-	public int getValue() {
-		
-		return valueIdentifier;
-	}
+        return ("Attempted to create card with invalid suit argument" + " " + this.valueIdentifier);
+    }
 
-} //End class
+    public int getValue() {
+
+        return valueIdentifier;
+    }
+
+}

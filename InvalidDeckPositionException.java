@@ -1,25 +1,25 @@
 public class InvalidDeckPositionException extends Exception {
 
-	private int positionIdentifier = 0;
+    private int positionIdentifier = 0;
 
-	public InvalidDeckPositionException(int inValidPosition) {
+    public InvalidDeckPositionException(int inValidPosition) {
 
-		positionIdentifier = inValidPosition;
+        positionIdentifier = inValidPosition;
 
-		System.out.println("Invalid Position" + inValidPosition);
+        System.out.println("Invalid Position" + inValidPosition);
 
-	}
+    }
 
-	private InvalidDeckPositionException() {
-		System.out.println("Invalid Position");
-	}
+    private InvalidDeckPositionException() {
+        System.out.println("Invalid Position");
+    }
 
-	public String toString() {
+    public String toString() {
 
-		return ("Attempted to get a card from a position not in Deck" + " " + this.positionIdentifier);
-	}
+        return ("Attempted to get a card from a position not in Deck" + " " + this.positionIdentifier);
+    }
 
-	public int getPositionValue() {
-		return positionIdentifier;
-	}
-} //End class
+    public int getPositionValue() {
+        return positionIdentifier;
+    }
+}
