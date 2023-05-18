@@ -16,6 +16,8 @@ import java.awt.*;
 import java.awt.Image.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.HashMap;
+import java.io.File;
 
 /**
  * 
@@ -37,12 +39,24 @@ public class BlackjackGUI extends JFrame{
     private JMenu mainMenu, loginMenu;
     private JMenuItem startGameMenuItem, statisticsMenuItem, helpMenuItem, existingMenuItem, newUserMenuItem;
     
-    private Player players;
+    private JLabel card1Label, card2Label, card3Label, card4Label;
+    
+    private Player player;
     private Deck deck;
+    private Dealer dealer;
     
     private boolean log = false;
     
     private Image gameBackground;
+    
+    
+    
+	
+    private ImageIcon dealerCard1Icon, dealerCard2Icon, playerCard1Icon, playerCard2Icon;
+    private Image dealerCard1Image, dealerCard2Image, playerCard1Image, playerCard2Image;
+    private Image modDealerCard1Image, modDealerCard2Image, modPlayerCard1Image, modPlayerCard2Image;
+    
+    private HashMap <String,String> imageMap;
     
     private int WINDOW_WIDTH = 508 * 2;
 	private int WINDOW_HEIGHT = 339 * 2;
@@ -81,7 +95,7 @@ public class BlackjackGUI extends JFrame{
 		mainPanel.setLayout(borderLayout);
 		mainPanel.setBackground(Color.WHITE);
 		
-		// Game Panel
+		// Welcome Panel
 		welcomePanel = new JPanel();
 		welcomePanel.setBackground(Color.WHITE);
 		
@@ -133,39 +147,108 @@ public class BlackjackGUI extends JFrame{
 	public void startGame() {
 		//GridBagLayout gridBagLayout = new GridBagLayout();
 		
+		// start game 
+		deck = new Deck();
+		player = new Player();
+		dealer = new Dealer();
+		
+		imageMap = new HashMap<>();
+		
+		imageMap.put("AC", "image/ace_of_clubs.png");
+		imageMap.put("AD", "image/ace_of_diamonds.png");
+		imageMap.put("AH", "image/ace_of_hearts.png");
+		imageMap.put("AS", "image/ace_of_spades.png");
+		
+		for (int r = 2;  r < 11; r++) {
+			imageMap.put(r+"C", "image/"+r+"_of_clubs.png");
+			imageMap.put(r+"D", "image/"+r+"_of_diamonds.png");
+			imageMap.put(r+"H", "image/"+r+"_of_hearts.png");
+			imageMap.put(r+"S", "image/"+r+"_of_spades.png");
+		}
+
+		imageMap.put("JC", "image/jack_of_clubs.png");
+		imageMap.put("JD", "image/jack_of_diamonds.png");
+		imageMap.put("JH", "image/jack_of_hearts.png");
+		imageMap.put("JS", "image/jack_of_spades.png");
+
+		imageMap.put("QC", "image/queen_of_clubs.png");
+		imageMap.put("QD", "image/queen_of_diamonds.png");
+		imageMap.put("QH", "image/queen_of_hearts.png");
+		imageMap.put("QS", "image/queen_of_spades.png");
+
+		imageMap.put("KC", "image/king_of_clubs.png");
+		imageMap.put("KD", "image/king_of_diamonds.png");
+		imageMap.put("KH", "image/king_of_hearts.png");
+		imageMap.put("KS", "image/king_of_spades.png");
+		
+		dealerCard1Icon = new ImageIcon(this.getClass().getResource("image/Bicycle_Playing_Cards_red.jpg"));
+		dealerCard1Image = dealerCard1Icon.getImage();
+		modDealerCard1Image= dealerCard1Image.getScaledInstance(100, 170, java.awt.Image.SCALE_SMOOTH);
+		dealerCard1Icon = new ImageIcon(modDealerCard1Image);
+		
+		dealerCard2Icon = new ImageIcon(this.getClass().getResource("image/Bicycle_Playing_Cards_red.jpg"));
+		dealerCard2Image = dealerCard2Icon.getImage();
+		modDealerCard2Image= dealerCard2Image.getScaledInstance(100, 170, java.awt.Image.SCALE_SMOOTH);
+		dealerCard2Icon = new ImageIcon(modDealerCard2Image);
+		
+		playerCard1Icon = new ImageIcon(this.getClass().getResource("image/Bicycle_Playing_Cards_red.jpg"));
+		playerCard1Image = playerCard1Icon.getImage();
+		modPlayerCard1Image= playerCard1Image.getScaledInstance(100, 170, java.awt.Image.SCALE_SMOOTH);
+		playerCard1Icon = new ImageIcon(modPlayerCard1Image);
+		
+		playerCard2Icon = new ImageIcon(this.getClass().getResource("image/Bicycle_Playing_Cards_red.jpg"));
+		playerCard2Image = playerCard2Icon.getImage();
+		modPlayerCard2Image= playerCard2Image.getScaledInstance(100, 170, java.awt.Image.SCALE_SMOOTH);
+		playerCard2Icon = new ImageIcon(modPlayerCard2Image);
+		
+				
+		try {
+			deck.shuffle();
+		} catch (InvalidDeckPositionException e1) {
+		// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}		
+		
 		// Screen Panel
 		gamePanel = new JPanel();
 		gamePanel.setLayout(new GridLayout(3,3));
 		//gamePanel.setLayout(gridBagLayout);
 		gamePanel.setBackground(new Color(50, 163, 39));
 		
-		// Bank Panel
-		JPanel bankPanel = new JPanel(new GridBagLayout());
-
-		GridBagConstraints gbc = new GridBagConstraints();
-
-		//gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.anchor = GridBagConstraints.CENTER;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.weighty = 1;
-				
-		JLabel bankLabel = new JLabel("Bank:\t");
-		JLabel bankMoneyLabel = new JLabel("$$$");
-		
-		bankPanel.add(bankLabel,gbc);
-		bankPanel.add(bankMoneyLabel,gbc);
+		//   Message Panel
+		JPanel messagePanel = new JPanel(new FlowLayout());
+		JLabel messageLabel = new JLabel("Enter amount to start game");
+		messagePanel.add(messageLabel);
 		
 		// Dealer card layout
 		JPanel dealerPanel = new JPanel(new BorderLayout());
 		JLabel dealerLabel = new JLabel("Dealer");
-		
-		JLabel card1Label = new JLabel("Card1");
-		JLabel card2Label = new JLabel("Card2");
-		
+				
+		card1Label = new JLabel(dealerCard1Icon);
+		card2Label = new JLabel(dealerCard2Icon);
+				
 		JPanel dealerCardPanel = new JPanel(new GridLayout(1,2));
 		dealerCardPanel.setBackground(Color.RED);
 		
-		gamePanel.add(new JLabel("Top Left"));
+		
+		// Bank Panel
+		JPanel bankPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weighty = 0;
+				
+		JLabel bankLabel = new JLabel("Bank: " + String.valueOf(player.getBank()));
+		JLabel betLabel = new JLabel("Bet: 0");
+		
+		bankPanel.add(bankLabel,gbc);
+		bankPanel.add(betLabel);
+		
+		
+		// Add top panels to gamePanel
+		gamePanel.add(messagePanel);
 		gamePanel.add(dealerPanel);
 		gamePanel.add(bankPanel);
 		
@@ -182,13 +265,63 @@ public class BlackjackGUI extends JFrame{
 				// TODO Auto-generated method stub
 				int num =  Integer.parseInt(amountInput.getText());
 				//play hand or something
+				
 				amountInput.setText("");
 				amountInput.setEnabled(false);
+				
+				if(player.getBank() > 0)
+				{
+					
+					player.setBet(num);
+					player.addCard(deck.nextCard());
+					dealer.addCard(deck.nextCard());
+					player.addCard(deck.nextCard());
+					dealer.addCard(deck.nextCard());
+					
+					bankLabel.setText("Bank: " + (player.getBank() - num));
+					betLabel.setText("Bet: " + num);
+					
+					String[] dealerValues = dealer.getHandString(true, false).split(" ");
+					System.out.println(dealer.getHandString(true, false));
+					
+					String[] playerValues = player.getHandString().split(" ");
+					System.out.println(player.getHandString());
+					
+					dealerCard1Icon = new ImageIcon(this.getClass().getResource(imageMap.get(dealerValues[1])));
+					dealerCard1Image = dealerCard1Icon.getImage();
+					modDealerCard1Image= dealerCard1Image.getScaledInstance(100, 170, java.awt.Image.SCALE_SMOOTH);
+					dealerCard1Icon = new ImageIcon(modDealerCard1Image);
+					
+					card1Label.setIcon(dealerCard1Icon);
+					
+					dealerCard2Icon = new ImageIcon(this.getClass().getResource(imageMap.get(dealerValues[2])));
+					dealerCard2Image = dealerCard2Icon.getImage();
+					modDealerCard2Image= dealerCard2Image.getScaledInstance(100, 170, java.awt.Image.SCALE_SMOOTH);
+					dealerCard2Icon = new ImageIcon(modDealerCard2Image);
+					
+					///card2Label.setIcon(dealerCard2Icon);
+					
+					playerCard1Icon = new ImageIcon(this.getClass().getResource(imageMap.get(playerValues[1])));
+					playerCard1Image = playerCard1Icon.getImage();
+					modPlayerCard1Image= playerCard1Image.getScaledInstance(100, 170, java.awt.Image.SCALE_SMOOTH);
+					playerCard1Icon = new ImageIcon(modPlayerCard1Image);
+					
+					card3Label.setIcon(playerCard1Icon);
+					
+					playerCard2Icon = new ImageIcon(this.getClass().getResource(imageMap.get(playerValues[2])));
+					playerCard2Image = playerCard2Icon.getImage();
+					modPlayerCard2Image= playerCard2Image.getScaledInstance(100, 170, java.awt.Image.SCALE_SMOOTH);
+					playerCard2Icon = new ImageIcon(modPlayerCard2Image);
+					
+					card4Label.setIcon(playerCard2Icon);
+					
+				}
+				else {
+					
+				}
 			}
 			
 		});
-		
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		
 		dealPanel.add(amountLabel,gbc);
 		dealPanel.add(amountInput,gbc);
@@ -198,8 +331,8 @@ public class BlackjackGUI extends JFrame{
 		JPanel playerPanel = new JPanel(new BorderLayout());
 		JLabel playerLabel = new JLabel("Player");
 				
-		JLabel card3Label = new JLabel("Card3");
-		JLabel card4Label = new JLabel("Card4");
+		card3Label = new JLabel(playerCard1Icon);
+		card4Label = new JLabel(playerCard2Icon);
 		
 		JPanel playerCardPanel = new JPanel(new GridLayout(1,2));
 		playerCardPanel.setBackground(Color.RED);
@@ -229,9 +362,9 @@ public class BlackjackGUI extends JFrame{
 		dealerPanel.add(dealerCardPanel, BorderLayout.CENTER);
 		
 		
-		gamePanel.add(new JLabel("Center Left"));
-		gamePanel.add(new JLabel("True Center"));
-		gamePanel.add(new JLabel("Center Right"));
+		gamePanel.add(new JLabel(""));
+		gamePanel.add(new JLabel(""));
+		gamePanel.add(new JLabel(""));
 		
 		gamePanel.add(dealPanel);
 		gamePanel.add(playerPanel);
@@ -241,6 +374,8 @@ public class BlackjackGUI extends JFrame{
 		mainPanel.add(gamePanel, BorderLayout.CENTER);
 		//setSize(508,339);
 		revalidate();
+		
+		
 		
 		
 		
