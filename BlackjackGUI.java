@@ -36,9 +36,6 @@ public class BlackjackGUI extends JFrame{
     private JMenuBar menuBar;
     private JMenu mainMenu, loginMenu;
     private JMenuItem startGameMenuItem, statisticsMenuItem, helpMenuItem, existingMenuItem, newUserMenuItem;
-    private JLabel label1, label2, label3;
-    
-    private JTable table;
     
     private Player players;
     private Deck deck;
@@ -142,6 +139,22 @@ public class BlackjackGUI extends JFrame{
 		//gamePanel.setLayout(gridBagLayout);
 		gamePanel.setBackground(new Color(50, 163, 39));
 		
+		// Bank Panel
+		JPanel bankPanel = new JPanel(new GridBagLayout());
+
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		//gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weighty = 1;
+				
+		JLabel bankLabel = new JLabel("Bank:\t");
+		JLabel bankMoneyLabel = new JLabel("$$$");
+		
+		bankPanel.add(bankLabel,gbc);
+		bankPanel.add(bankMoneyLabel,gbc);
+		
 		// Dealer card layout
 		JPanel dealerPanel = new JPanel(new BorderLayout());
 		JLabel dealerLabel = new JLabel("Dealer");
@@ -149,8 +162,37 @@ public class BlackjackGUI extends JFrame{
 		JLabel card1Label = new JLabel("Card1");
 		JLabel card2Label = new JLabel("Card2");
 		
-		JPanel delaerCardPanel = new JPanel(new GridLayout(1,2));
-		delaerCardPanel.setBackground(Color.RED);
+		JPanel dealerCardPanel = new JPanel(new GridLayout(1,2));
+		dealerCardPanel.setBackground(Color.RED);
+		
+		gamePanel.add(new JLabel("Top Left"));
+		gamePanel.add(dealerPanel);
+		gamePanel.add(bankPanel);
+		
+		// Amount to deal 
+		JPanel dealPanel = new JPanel(new GridBagLayout());
+		JLabel amountLabel = new JLabel("Amount to deal");
+		JTextField amountInput = new JTextField();
+		
+		JButton amountEnteredButton = new JButton("Place Bet");
+		amountEnteredButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int num =  Integer.parseInt(amountInput.getText());
+				//play hand or something
+				amountInput.setText("");
+				amountInput.setEnabled(false);
+			}
+			
+		});
+		
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		
+		dealPanel.add(amountLabel,gbc);
+		dealPanel.add(amountInput,gbc);
+		dealPanel.add(amountEnteredButton);
 		
 		// Player card layout
 		JPanel playerPanel = new JPanel(new BorderLayout());
@@ -162,8 +204,17 @@ public class BlackjackGUI extends JFrame{
 		JPanel playerCardPanel = new JPanel(new GridLayout(1,2));
 		playerCardPanel.setBackground(Color.RED);
 		
+		// Hit or stand buttons
+		JPanel actionPanel = new JPanel(new GridBagLayout());
+		
+		JButton hitBtn = new JButton("Hit");
+		JButton standBtn = new JButton("Stand");
 		
 		// Adding components onto one another
+		
+		actionPanel.add(hitBtn,gbc);
+		actionPanel.add(standBtn, gbc);
+		
 		playerCardPanel.add(card3Label);
 		playerCardPanel.add(card4Label);
 		
@@ -171,24 +222,20 @@ public class BlackjackGUI extends JFrame{
 		playerPanel.add(playerLabel, BorderLayout.SOUTH);
 		
 		
-		delaerCardPanel.add(card1Label);
-		delaerCardPanel.add(card2Label);
+		dealerCardPanel.add(card1Label);
+		dealerCardPanel.add(card2Label);
 		
 		dealerPanel.add(dealerLabel, BorderLayout.NORTH);
-		dealerPanel.add(delaerCardPanel, BorderLayout.CENTER);
+		dealerPanel.add(dealerCardPanel, BorderLayout.CENTER);
 		
-		
-		gamePanel.add(new JLabel("Top Left"));
-		gamePanel.add(dealerPanel);
-		gamePanel.add(new JLabel("Top Right"));
 		
 		gamePanel.add(new JLabel("Center Left"));
 		gamePanel.add(new JLabel("True Center"));
 		gamePanel.add(new JLabel("Center Right"));
 		
-		gamePanel.add(new JLabel("Bottom Left"));
+		gamePanel.add(dealPanel);
 		gamePanel.add(playerPanel);
-		gamePanel.add(new JLabel("Bottom Right"));
+		gamePanel.add(actionPanel);
 		
 		
 		mainPanel.add(gamePanel, BorderLayout.CENTER);
