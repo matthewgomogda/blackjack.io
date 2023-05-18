@@ -9,3 +9,6 @@
 /InvalidDeckPositionException.class
 /JMenubar.class
 /Player.class
+/BlackjackGUI.class
+/BlackjackGUI$1.class
+/BlackjackGUI$StartGameListener.class
