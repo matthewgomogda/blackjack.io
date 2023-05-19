@@ -213,7 +213,7 @@ public class BlackjackGUI extends JFrame{
 		gamePanel = new JPanel();
 		gamePanel.setLayout(new GridLayout(3,3));
 		//gamePanel.setLayout(gridBagLayout);
-		gamePanel.setBackground(new Color(50, 163, 39));
+		//gamePanel.setBackground(new Color(50, 163, 39));
 		
 		//   Message Panel
 		JPanel messagePanel = new JPanel(new FlowLayout());
@@ -228,7 +228,7 @@ public class BlackjackGUI extends JFrame{
 		card2Label = new JLabel(dealerCard2Icon);
 				
 		JPanel dealerCardPanel = new JPanel(new GridLayout(1,2));
-		dealerCardPanel.setBackground(Color.RED);
+		dealerCardPanel.setBackground(Color.BLACK);
 		
 		
 		// Bank Panel
@@ -282,10 +282,10 @@ public class BlackjackGUI extends JFrame{
 					betLabel.setText("Bet: " + num);
 					
 					String[] dealerValues = dealer.getHandString(true, false).split(" ");
-					System.out.println(dealer.getHandString(true, false));
+					System.out.println("Dealer " + dealer.getHandString(true, false));
 					
 					String[] playerValues = player.getHandString().split(" ");
-					System.out.println(player.getHandString());
+					System.out.println("Player " +player.getHandString());
 					
 					dealerCard1Icon = new ImageIcon(this.getClass().getResource(imageMap.get(dealerValues[1])));
 					dealerCard1Image = dealerCard1Icon.getImage();
@@ -335,7 +335,7 @@ public class BlackjackGUI extends JFrame{
 		card4Label = new JLabel(playerCard2Icon);
 		
 		JPanel playerCardPanel = new JPanel(new GridLayout(1,2));
-		playerCardPanel.setBackground(Color.RED);
+		playerCardPanel.setBackground(Color.BLACK);
 		
 		// Hit or stand buttons
 		JPanel actionPanel = new JPanel(new GridBagLayout());
